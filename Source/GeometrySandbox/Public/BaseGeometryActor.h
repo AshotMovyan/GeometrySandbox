@@ -7,6 +7,30 @@
 #include "Components/StaticMeshComponent.h"
 #include "BaseGeometryActor.generated.h"
 
+
+UENUM(BlueprintType)
+enum class EMovementType : uint8
+{
+	Sin,
+	Cos,
+	Static
+};
+
+USTRUCT(BlueprintType)
+struct FGeometryData
+{
+	GENERATED_USTRUCT_BODY()
+
+	UPROPERTY(EditAnywhere, Category = "Movement")
+		float amplitude = 50.f;
+
+	UPROPERTY(EditAnywhere, Category = "Movement")
+		float frequance = 2.f;
+
+	UPROPERTY(EditAnywhere, Category = "Movement")
+		EMovementType MoveType = EMovementType::Static;
+};
+
 UCLASS()
 class GEOMETRYSANDBOX_API ABaseGeometryActor : public AActor
 {
@@ -24,11 +48,8 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY(EditAnywhere, Category = "Movement")
-		float amplitude = 50.f;
-
-	UPROPERTY(EditAnywhere, Category = "Movement")
-		float frequance = 2.f;
+	UPROPERTY(EditAnywhere, Category = "Geometry Data")
+	FGeometryData GeometryData;
 
 	UPROPERTY(EditAnywhere, Category = "Weapone")
 	int32 weapon_num = 4;
@@ -50,11 +71,11 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 private:
-	FVector initial_location;
+	FVector InitialLocation;
 
-	void print_types();
-	void print_transform();
-	void print_string_types();
-
+	void PrintTypes();
+	void PrintTransform();
+	void PrintStringTypes();
+	void HandleMovement();
 
 };
